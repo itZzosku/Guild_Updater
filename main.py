@@ -32,6 +32,13 @@ if post_response.status_code == 200:
                 if 'jobs' in response_data.get('batchInfo', {}) and len(response_data['batchInfo']['jobs']) > 0:
                     position_in_queue = response_data['batchInfo']['jobs'][0].get('positionInQueue', "N/A")
                     print(f"Job Status: {batch_status}, Current position in queue: {position_in_queue}")
+
+                    # Extract and print the "FlavorText"
+                    flavor_text = response_data.get('batchInfo', {}).get('flavorText', None)
+                    if flavor_text:
+                        print(flavor_text)
+                    else:
+                        print("Flavor Text not found.")
                 else:
                     print(f"Job Status: {batch_status}, No job information available.")
 
@@ -41,7 +48,7 @@ if post_response.status_code == 200:
                     break
                 else:
                     # print("Job is still active, waiting, or queued. Waiting for the next check...")
-                    time.sleep(30)  # Adjust the sleep time as necessary
+                    time.sleep(10)  # Adjust the sleep time as necessary
             else:
                 print(f"Failed to get monitoring info. Status code: {response.status_code}")
                 break
